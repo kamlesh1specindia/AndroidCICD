@@ -37,6 +37,7 @@ jobs:
       - name : Build with Gradle
         run : ./gradlew build
 
+
       # Build APK from given path
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.0.0
@@ -44,6 +45,17 @@ jobs:
           name: AndroidCICD.apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
+      # Sending Push message in Slack
+      - name: Send GitHub Action trigger data to Slack workflow
+        id: slack
+        uses: mariobodemann/slack@v0.0.3
+        with:
+          status: ${{ job.status }}
+          message: 'Push update in Slack from master branch'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      # Send APK on slack
       - uses: MeilCli/slack-upload-file@v3.1.3
         with:
           slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
