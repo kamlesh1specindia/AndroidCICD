@@ -1,4 +1,6 @@
-name: AndroidBuild
+# This is a basic workflow to help you get started with Actions
+name: AndroidCICDBuild
+
 on:
   pull_request :
     branches : [ master ]
